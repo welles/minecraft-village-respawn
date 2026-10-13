@@ -61,7 +61,7 @@ tasks {
 
         val mixinJava = "JAVA_${requiredJava.majorVersion}"
         val mixins = buildList {
-            addAll(listOf("MinecraftServerMixin", "PlayerListMixin", "PlayerMixin", "ServerPlayerMixin"))
+            addAll(listOf("PlayerListMixin", "PlayerMixin", "ServerPlayerMixin"))
             // PrepareSpawnTask was added in 1.21.9
             if (sc.current.parsed >= "1.21.9") add("PrepareSpawnTaskMixin")
         }.joinToString(", ") { "\"$it\"" }

@@ -1,8 +1,6 @@
 package dev.welles.villagerespawn;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,16 +9,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * position and the player actually entering the world.
  */
 public final class FirstSpawn {
-    private static final Map<UUID, VillageLocator.Spot> PENDING = new ConcurrentHashMap<>();
+    private static final Set<UUID> PENDING = ConcurrentHashMap.newKeySet();
 
     private FirstSpawn() {}
 
-    public static void mark(UUID player, VillageLocator.Spot spot) {
-        PENDING.put(player, spot);
+    public static void mark(UUID player) {
+        PENDING.add(player);
     }
 
-    @Nullable
-    public static VillageLocator.Spot consume(UUID player) {
+    /** Returns whether {@code player} was placed in a village, and forgets about it. */
+    public static boolean consume(UUID player) {
         return PENDING.remove(player);
     }
 }

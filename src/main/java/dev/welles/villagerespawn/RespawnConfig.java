@@ -40,9 +40,6 @@ public final class RespawnConfig {
     public boolean fromOtherDimensions = true;
     public boolean preferBell = true;
 
-    public boolean ringBell = true;
-    public boolean bellEcho = true;
-
     public boolean showMessage = true;
     public String message = "You wake up in the nearest village.";
     public String firstSpawnMessage = "Your journey begins in the nearest village.";
@@ -71,8 +68,6 @@ public final class RespawnConfig {
         fromEnd                  Deaths in the End use the village closest to the world spawn.
         fromOtherDimensions      Deaths in other (modded) dimensions use the closest Overworld village.
         preferBell               Respawn next to the village bell instead of the village center.
-        ringBell                 Ring the village bell after respawning in a village.
-        bellEcho                 Let the bell ring echo (fading repetitions).
         showMessage              Send a chat message after (re)spawning in a village.
         message                  Text of that chat message after respawning.
         firstSpawnMessage        Text of that chat message on the first spawn.
@@ -170,8 +165,6 @@ public final class RespawnConfig {
         fromEnd = bool(props, "fromEnd", fromEnd);
         fromOtherDimensions = bool(props, "fromOtherDimensions", fromOtherDimensions);
         preferBell = bool(props, "preferBell", preferBell);
-        ringBell = bool(props, "ringBell", ringBell);
-        bellEcho = bool(props, "bellEcho", bellEcho);
         showMessage = bool(props, "showMessage", showMessage);
         message = props.getProperty("message", message);
         firstSpawnMessage = props.getProperty("firstSpawnMessage", firstSpawnMessage);
@@ -201,8 +194,6 @@ public final class RespawnConfig {
         props.put("fromEnd", String.valueOf(fromEnd));
         props.put("fromOtherDimensions", String.valueOf(fromOtherDimensions));
         props.put("preferBell", String.valueOf(preferBell));
-        props.put("ringBell", String.valueOf(ringBell));
-        props.put("bellEcho", String.valueOf(bellEcho));
         props.put("showMessage", String.valueOf(showMessage));
         props.put("message", message);
         props.put("firstSpawnMessage", firstSpawnMessage);

@@ -1,7 +1,6 @@
 package dev.welles.villagerespawn.mixin;
 
 import dev.welles.villagerespawn.FirstSpawn;
-import dev.welles.villagerespawn.RespawnBell;
 import dev.welles.villagerespawn.RespawnConfig;
 import dev.welles.villagerespawn.VillageLocator;
 import net.minecraft.network.Connection;
@@ -72,22 +71,20 @@ public abstract class PlayerListMixin {
         RespawnConfig config = RespawnConfig.get();
         if (!config.spawnsInVillages()) return null;
         VillageLocator.Spot spot = VillageLocator.findNearWorldSpawn(server, config);
-        if (spot != null) FirstSpawn.mark(player.getUUID(), spot);
+        if (spot != null) FirstSpawn.mark(player.getUUID());
         return spot;
     }
     //?}
 
-    /** Greets the player and rings the bell once they are in the world. */
+    /** Greets the player once they are in the world. */
     @Inject(method = "placeNewPlayer", at = @At("TAIL"))
     private void villagerespawn$welcomeToVillage(Connection connection, ServerPlayer player, CommonListenerCookie cookie,
                                                 CallbackInfo ci) {
-        VillageLocator.Spot spot = FirstSpawn.consume(player.getUUID());
-        if (spot == null) return;
+        if (!FirstSpawn.consume(player.getUUID())) return;
 
         RespawnConfig config = RespawnConfig.get();
         if (config.showMessage && !config.firstSpawnMessage.isBlank()) {
             player.sendSystemMessage(Component.literal(config.firstSpawnMessage));
         }
-        RespawnBell.ringFor(spot, config, RespawnBell.JOIN_DELAY_TICKS);
     }
 }

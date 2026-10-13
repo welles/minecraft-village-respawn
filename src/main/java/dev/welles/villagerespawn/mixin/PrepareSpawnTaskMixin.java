@@ -47,7 +47,7 @@ public abstract class PrepareSpawnTaskMixin {
         if (server.getWorldData().overworldData().getRespawnData().dimension() != Level.OVERWORLD) return data;
 
         villagerespawn$spot = VillageLocator.findNearWorldSpawn(server, config);
-        if (villagerespawn$spot != null) FirstSpawn.mark(nameAndId.id(), villagerespawn$spot);
+        if (villagerespawn$spot != null) FirstSpawn.mark(nameAndId.id());
         return data;
     }
 
