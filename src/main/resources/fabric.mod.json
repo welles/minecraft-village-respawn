@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}",
+  "version": "${version}",
+  "name": "${name}",
+  "description": "Players keep their items on death but lose all experience, and respawn in the village closest to where they died.",
+  "authors": [
+    "Nico Welles"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.welles.villagerespawn.VillageRespawnFabric"
+    ]
+  },
+  "mixins": [
+    "villagerespawn.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader}",
+    "minecraft": "${minecraft}"
+  }
+}
