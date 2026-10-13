@@ -59,6 +59,13 @@ source tree. Each node in `settings.gradle.kts` targets one Minecraft version an
 ./gradlew :26.3-neoforge:runClient       # run a specific version (NeoForge)
 ```
 
+On **NixOS**, run the game inside the provided Nix shell so Minecraft finds its native libraries
+(otherwise it crashes with `GLFW error during init: Failed to detect any supported platform`):
+
+```sh
+nix-shell --run './gradlew :1.21.1-fabric:runClient'
+```
+
 Version-specific code uses Stonecutter comments (`//? if >=1.21.9 {`). The source tree is checked in for the
 `1.21.1-fabric` node; switch the active version with the `Set active project to …` Gradle tasks before editing code
 for another version, and switch back to `1.21.1-fabric` (`Reset active project`) before committing.
