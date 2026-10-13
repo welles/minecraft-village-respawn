@@ -71,6 +71,7 @@ public final class RespawnConfig {
         bellEcho                 Let the bell ring echo (fading repetitions).
         showMessage              Send a chat message after respawning in a village.
         message                  Text of that chat message.
+        Villages outside the world border are ignored.
         If no village is found, the player respawns normally (bed, respawn anchor or world spawn).""";
 
     /** Whether items are kept, taking the master switch into account. */

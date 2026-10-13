@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -40,10 +41,12 @@ public final class VillageLocator {
 
         BlockPos origin = searchOrigin(player, server, overworld, config);
         if (origin == null) return null;
+        WorldBorder border = overworld.getWorldBorder();
+        origin = border.clampToBounds(origin);
 
         BlockPos village = overworld.findNearestMapStructure(StructureTags.VILLAGE, origin, config.searchRadiusChunks, false);
-        if (village == null) {
-            VillageRespawn.LOGGER.debug("No village found within {} chunks of {}", config.searchRadiusChunks, origin);
+        if (village == null || !border.isWithinBounds(village)) {
+            VillageRespawn.LOGGER.debug("No village found within {} chunks of {} inside the world border", config.searchRadiusChunks, origin);
             return null;
         }
 
@@ -115,6 +118,7 @@ public final class VillageLocator {
     }
 
     private static boolean isSafe(ServerLevel level, BlockPos feet) {
+        if (!level.getWorldBorder().isWithinBounds(feet)) return false;
         BlockPos below = feet.below();
         BlockState ground = level.getBlockState(below);
         if (!ground.getFluidState().isEmpty() || !ground.isFaceSturdy(level, below, Direction.UP)) return false;
