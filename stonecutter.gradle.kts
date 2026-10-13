@@ -14,4 +14,11 @@ stonecutter parameters {
     constants {
         match(loader, "fabric", "neoforge")
     }
+
+    replacements {
+        // DimensionTransition was renamed in 1.21.2
+        string(current.parsed >= "1.21.2") {
+            replace("DimensionTransition", "TeleportTransition")
+        }
+    }
 }
