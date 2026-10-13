@@ -8,8 +8,9 @@ A Minecraft mod for **Fabric** and **NeoForge** (Minecraft 1.21.1 – 26.3) that
   the village closest to where they died. Deaths in the Nether use the closest Overworld village (coordinates ×8),
   deaths in the End use the village closest to the world spawn. Villages outside the world border are ignored.
   If no village is found, the normal respawn applies.
-- **Start in a village** – players joining the world for the first time start in the village closest to the world
-  spawn instead of the world spawn itself.
+- **Start in a village** – players joining the world for the first time (no saved player data, like vanilla decides)
+  start in the village closest to the world spawn instead of the world spawn itself. The position is chosen before
+  the client spawns, so the join loading screen covers loading the village.
 - **The village bell rings** with a fading echo when you wake up.
 
 Every feature can be configured or switched back to vanilla behaviour individually.

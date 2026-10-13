@@ -18,8 +18,10 @@ import java.util.List;
  * delayed repetitions, so it works with vanilla clients.
  */
 public final class RespawnBell {
-    /** Delay before the first ring, so the client has finished loading the terrain. */
-    private static final int INITIAL_DELAY_TICKS = 20;
+    /** Delay before the first ring after a respawn, so the client has finished loading the terrain. */
+    public static final int RESPAWN_DELAY_TICKS = 20;
+    /** Delay before the first ring after joining, which takes longer than a respawn. */
+    public static final int JOIN_DELAY_TICKS = 40;
     /** Delays (relative to the first ring) and volumes of the echoes. */
     private static final int[] ECHO_DELAYS = {7, 15, 24};
     private static final float[] ECHO_VOLUMES = {0.45F, 0.22F, 0.1F};
@@ -33,14 +35,14 @@ public final class RespawnBell {
     private RespawnBell() {}
 
     /** Rings the bell of the village {@code spot} is in, if enabled. */
-    public static void ringFor(VillageLocator.Spot spot, RespawnConfig config) {
+    public static void ringFor(VillageLocator.Spot spot, RespawnConfig config, int delayTicks) {
         if (!config.ringBell) return;
         BlockPos pos = spot.bell() != null ? spot.bell() : BlockPos.containing(spot.position());
-        schedule(spot.level(), pos, config.bellEcho);
+        schedule(spot.level(), pos, config.bellEcho, delayTicks);
     }
 
-    public static synchronized void schedule(ServerLevel level, BlockPos pos, boolean echo) {
-        int start = level.getServer().getTickCount() + INITIAL_DELAY_TICKS;
+    public static synchronized void schedule(ServerLevel level, BlockPos pos, boolean echo, int delayTicks) {
+        int start = level.getServer().getTickCount() + delayTicks;
         PENDING.add(new Ring(level.dimension(), pos, start, 1.0F, 1.0F));
         if (!echo) return;
         for (int i = 0; i < ECHO_DELAYS.length; i++) {

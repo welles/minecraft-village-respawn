@@ -58,7 +58,13 @@ tasks {
         filesMatching("fabric.mod.json") { expand(props) }
 
         val mixinJava = "JAVA_${requiredJava.majorVersion}"
-        filesMatching("*.mixins.json") { expand("java" to mixinJava) }
+        val mixins = buildList {
+            addAll(listOf("MinecraftServerMixin", "PlayerListMixin", "PlayerMixin", "ServerPlayerMixin"))
+            // PrepareSpawnTask was added in 1.21.9
+            if (sc.current.parsed >= "1.21.9") add("PrepareSpawnTaskMixin")
+        }.joinToString(", ") { "\"$it\"" }
+        inputs.property("mixins", mixins)
+        filesMatching("*.mixins.json") { expand("java" to mixinJava, "mixins" to mixins) }
 
         exclude("META-INF/neoforge.mods.toml")
     }

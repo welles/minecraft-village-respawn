@@ -76,7 +76,7 @@ public abstract class ServerPlayerMixin {
         if (spot == null) return null;
 
         if (config.showMessage && !config.message.isBlank()) player.sendSystemMessage(Component.literal(config.message));
-        RespawnBell.ringFor(spot, config);
+        RespawnBell.ringFor(spot, config, RespawnBell.RESPAWN_DELAY_TICKS);
         return new DimensionTransition(spot.level(), spot.position(), Vec3.ZERO, spot.yaw(), 0.0F, post);
     }
 
