@@ -4,6 +4,7 @@
   "compatibilityLevel": "${java}",
   "mixins": [
     "MinecraftServerMixin",
+    "PlayerListMixin",
     "PlayerMixin",
     "ServerPlayerMixin"
   ],

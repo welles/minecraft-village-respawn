@@ -8,6 +8,8 @@ A Minecraft mod for **Fabric** and **NeoForge** (Minecraft 1.21.1 – 26.3) that
   the village closest to where they died. Deaths in the Nether use the closest Overworld village (coordinates ×8),
   deaths in the End use the village closest to the world spawn. Villages outside the world border are ignored.
   If no village is found, the normal respawn applies.
+- **Start in a village** – players joining the world for the first time start in the village closest to the world
+  spawn instead of the world spawn itself.
 - **The village bell rings** with a fading echo when you wake up.
 
 Every feature can be configured or switched back to vanilla behaviour individually.
@@ -32,6 +34,7 @@ running.
 | `experienceOnDeath`       | `LOSE`  | `LOSE` = all experience is gone, `KEEP` = experience is kept, `VANILLA` = vanilla behaviour.        |
 | `villageRespawn`          | `true`  | Respawn in the nearest village. `false` = vanilla respawn.                                          |
 | `overrideSpawnPoint`      | `true`  | `true` = ignore beds/respawn anchors. `false` = use the village only without a valid spawn point.   |
+| `villageFirstSpawn`       | `true`  | New players start in the village closest to the world spawn. `false` = vanilla world spawn.         |
 | `searchRadiusChunks`      | `100`   | Village search radius in chunks (like `/locate`).                                                   |
 | `fromNether`              | `true`  | Deaths in the Nether respawn in the Overworld village closest to the corresponding coordinates.     |
 | `fromEnd`                 | `true`  | Deaths in the End respawn in the village closest to the world spawn.                                |
@@ -39,8 +42,9 @@ running.
 | `preferBell`              | `true`  | Respawn next to the village bell instead of the village center.                                     |
 | `ringBell`                | `true`  | Ring the village bell after respawning in a village.                                                |
 | `bellEcho`                | `true`  | Let the bell ring echo (fading repetitions).                                                        |
-| `showMessage`             | `true`  | Send a chat message after respawning in a village.                                                  |
-| `message`                 | …       | Text of that message.                                                                               |
+| `showMessage`             | `true`  | Send a chat message after (re)spawning in a village.                                                |
+| `message`                 | …       | Text of that message after respawning.                                                              |
+| `firstSpawnMessage`       | …       | Text of that message on the first spawn.                                                            |
 
 ## Building
 

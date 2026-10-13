@@ -32,6 +32,13 @@ public final class RespawnBell {
 
     private RespawnBell() {}
 
+    /** Rings the bell of the village {@code spot} is in, if enabled. */
+    public static void ringFor(VillageLocator.Spot spot, RespawnConfig config) {
+        if (!config.ringBell) return;
+        BlockPos pos = spot.bell() != null ? spot.bell() : BlockPos.containing(spot.position());
+        schedule(spot.level(), pos, config.bellEcho);
+    }
+
     public static synchronized void schedule(ServerLevel level, BlockPos pos, boolean echo) {
         int start = level.getServer().getTickCount() + INITIAL_DELAY_TICKS;
         PENDING.add(new Ring(level.dimension(), pos, start, 1.0F, 1.0F));

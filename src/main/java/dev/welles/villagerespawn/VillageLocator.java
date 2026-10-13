@@ -34,13 +34,25 @@ public final class VillageLocator {
 
     private VillageLocator() {}
 
+    /** Finds the village closest to where {@code player} died. */
     @Nullable
-    public static Spot find(ServerPlayer player, RespawnConfig config) {
+    public static Spot findNearDeath(ServerPlayer player, RespawnConfig config) {
         MinecraftServer server = player.level().getServer();
         ServerLevel overworld = server.overworld();
 
         BlockPos origin = searchOrigin(player, server, overworld, config);
-        if (origin == null) return null;
+        return origin == null ? null : findNear(overworld, origin, config);
+    }
+
+    /** Finds the village closest to the world spawn. */
+    @Nullable
+    public static Spot findNearWorldSpawn(MinecraftServer server, RespawnConfig config) {
+        ServerLevel overworld = server.overworld();
+        return findNear(overworld, worldSpawn(overworld), config);
+    }
+
+    @Nullable
+    private static Spot findNear(ServerLevel overworld, BlockPos origin, RespawnConfig config) {
         WorldBorder border = overworld.getWorldBorder();
         origin = border.clampToBounds(origin);
 

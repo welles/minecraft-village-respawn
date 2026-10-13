@@ -3,7 +3,6 @@ package dev.welles.villagerespawn.mixin;
 import dev.welles.villagerespawn.RespawnBell;
 import dev.welles.villagerespawn.RespawnConfig;
 import dev.welles.villagerespawn.VillageLocator;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.portal.DimensionTransition;
@@ -73,13 +72,11 @@ public abstract class ServerPlayerMixin {
     @Unique
     private static DimensionTransition villagerespawn$villageTransition(ServerPlayer player, RespawnConfig config,
                                                                         DimensionTransition.PostDimensionTransition post) {
-        VillageLocator.Spot spot = VillageLocator.find(player, config);
+        VillageLocator.Spot spot = VillageLocator.findNearDeath(player, config);
         if (spot == null) return null;
 
         if (config.showMessage && !config.message.isBlank()) player.sendSystemMessage(Component.literal(config.message));
-        if (config.ringBell) {
-            RespawnBell.schedule(spot.level(), spot.bell() != null ? spot.bell() : BlockPos.containing(spot.position()), config.bellEcho);
-        }
+        RespawnBell.ringFor(spot, config);
         return new DimensionTransition(spot.level(), spot.position(), Vec3.ZERO, spot.yaw(), 0.0F, post);
     }
 

@@ -33,6 +33,7 @@ public final class RespawnConfig {
 
     public boolean villageRespawn = true;
     public boolean overrideSpawnPoint = true;
+    public boolean villageFirstSpawn = true;
     public int searchRadiusChunks = 100;
     public boolean fromNether = true;
     public boolean fromEnd = true;
@@ -44,6 +45,7 @@ public final class RespawnConfig {
 
     public boolean showMessage = true;
     public String message = "You wake up in the nearest village.";
+    public String firstSpawnMessage = "Your journey begins in the nearest village.";
 
     private static final String HEADER = """
         Village Respawn configuration
@@ -62,6 +64,8 @@ public final class RespawnConfig {
                                  false = vanilla respawn (bed, respawn anchor or world spawn)
         overrideSpawnPoint       true  = always respawn in the village, even if a bed/respawn anchor is set
                                  false = only use the village if there is no valid bed/respawn anchor
+        villageFirstSpawn        true  = players joining the world for the first time start in the village closest to the world spawn
+                                 false = vanilla (they start at the world spawn)
         searchRadiusChunks       Search radius around the place of death, in chunks (like /locate).
         fromNether               Deaths in the Nether use the closest Overworld village (coordinates x8).
         fromEnd                  Deaths in the End use the village closest to the world spawn.
@@ -69,8 +73,9 @@ public final class RespawnConfig {
         preferBell               Respawn next to the village bell instead of the village center.
         ringBell                 Ring the village bell after respawning in a village.
         bellEcho                 Let the bell ring echo (fading repetitions).
-        showMessage              Send a chat message after respawning in a village.
-        message                  Text of that chat message.
+        showMessage              Send a chat message after (re)spawning in a village.
+        message                  Text of that chat message after respawning.
+        firstSpawnMessage        Text of that chat message on the first spawn.
         Villages outside the world border are ignored.
         If no village is found, the player respawns normally (bed, respawn anchor or world spawn).""";
 
@@ -82,6 +87,11 @@ public final class RespawnConfig {
     /** The experience behaviour, taking the master switch into account. */
     public ExperienceMode experienceMode() {
         return enabled ? experienceOnDeath : ExperienceMode.VANILLA;
+    }
+
+    /** Whether new players start in a village, taking the master switch into account. */
+    public boolean spawnsInVillages() {
+        return enabled && villageFirstSpawn;
     }
 
     /** Whether players respawn in villages, taking the master switch into account. */
@@ -154,6 +164,7 @@ public final class RespawnConfig {
         experienceOnDeath = experience(props, "experienceOnDeath", experienceOnDeath);
         villageRespawn = bool(props, "villageRespawn", villageRespawn);
         overrideSpawnPoint = bool(props, "overrideSpawnPoint", overrideSpawnPoint);
+        villageFirstSpawn = bool(props, "villageFirstSpawn", villageFirstSpawn);
         searchRadiusChunks = integer(props, "searchRadiusChunks", searchRadiusChunks, 1, 1000);
         fromNether = bool(props, "fromNether", fromNether);
         fromEnd = bool(props, "fromEnd", fromEnd);
@@ -163,6 +174,7 @@ public final class RespawnConfig {
         bellEcho = bool(props, "bellEcho", bellEcho);
         showMessage = bool(props, "showMessage", showMessage);
         message = props.getProperty("message", message);
+        firstSpawnMessage = props.getProperty("firstSpawnMessage", firstSpawnMessage);
         return props.keySet().containsAll(toProperties().keySet());
     }
 
@@ -183,6 +195,7 @@ public final class RespawnConfig {
         props.put("experienceOnDeath", experienceOnDeath.name());
         props.put("villageRespawn", String.valueOf(villageRespawn));
         props.put("overrideSpawnPoint", String.valueOf(overrideSpawnPoint));
+        props.put("villageFirstSpawn", String.valueOf(villageFirstSpawn));
         props.put("searchRadiusChunks", String.valueOf(searchRadiusChunks));
         props.put("fromNether", String.valueOf(fromNether));
         props.put("fromEnd", String.valueOf(fromEnd));
@@ -192,6 +205,7 @@ public final class RespawnConfig {
         props.put("bellEcho", String.valueOf(bellEcho));
         props.put("showMessage", String.valueOf(showMessage));
         props.put("message", message);
+        props.put("firstSpawnMessage", firstSpawnMessage);
         return props;
     }
 
