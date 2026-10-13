@@ -3,6 +3,7 @@
   "package": "dev.welles.villagerespawn.mixin",
   "compatibilityLevel": "${java}",
   "mixins": [
+    "MinecraftServerMixin",
     "PlayerMixin",
     "ServerPlayerMixin"
   ],

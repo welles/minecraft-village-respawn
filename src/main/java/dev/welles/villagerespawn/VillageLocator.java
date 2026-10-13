@@ -28,7 +28,8 @@ public final class VillageLocator {
     private static final int BELL_SEARCH_RADIUS = LOAD_RADIUS_CHUNKS * 16;
     private static final int SPOT_SEARCH_RADIUS = 8;
 
-    public record Spot(ServerLevel level, Vec3 position, float yaw) {}
+    /** @param bell the village bell, or {@code null} if none was found */
+    public record Spot(ServerLevel level, Vec3 position, float yaw, @Nullable BlockPos bell) {}
 
     private VillageLocator() {}
 
@@ -54,13 +55,11 @@ public final class VillageLocator {
             }
         }
 
-        BlockPos center = village;
-        if (config.preferBell) {
-            PoiManager poi = overworld.getPoiManager();
-            poi.ensureLoadedAndValid(overworld, village, BELL_SEARCH_RADIUS);
-            center = poi.findClosest(type -> type.is(PoiTypes.MEETING), village, BELL_SEARCH_RADIUS, PoiManager.Occupancy.ANY)
-                .orElse(village);
-        }
+        PoiManager poi = overworld.getPoiManager();
+        poi.ensureLoadedAndValid(overworld, village, BELL_SEARCH_RADIUS);
+        BlockPos bell = poi.findClosest(type -> type.is(PoiTypes.MEETING), village, BELL_SEARCH_RADIUS, PoiManager.Occupancy.ANY)
+            .orElse(null);
+        BlockPos center = config.preferBell && bell != null ? bell : village;
 
         BlockPos spot = findSafeSpot(overworld, center);
         if (spot == null) return null;
@@ -70,7 +69,7 @@ public final class VillageLocator {
         double dx = center.getX() + 0.5 - position.x;
         double dz = center.getZ() + 0.5 - position.z;
         float yaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0F;
-        return new Spot(overworld, position, yaw);
+        return new Spot(overworld, position, yaw, bell);
     }
 
     /** The Overworld position to search from, or {@code null} if the dimension of death is disabled. */

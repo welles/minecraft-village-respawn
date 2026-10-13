@@ -7,6 +7,7 @@ A Minecraft mod for **Fabric** and **NeoForge** (Minecraft 1.21.1 – 26.3) that
 - **Respawn in the nearest village** – instead of the bed or world spawn, players wake up next to the bell of
   the village closest to where they died. Deaths in the Nether use the closest Overworld village (coordinates ×8),
   deaths in the End use the village closest to the world spawn. If no village is found, the normal respawn applies.
+- **The village bell rings** with a fading echo when you wake up.
 
 Every feature can be configured or switched back to vanilla behaviour individually.
 
@@ -35,6 +36,8 @@ running.
 | `fromEnd`                 | `true`  | Deaths in the End respawn in the village closest to the world spawn.                                |
 | `fromOtherDimensions`     | `true`  | Deaths in other (modded) dimensions respawn in the closest Overworld village.                       |
 | `preferBell`              | `true`  | Respawn next to the village bell instead of the village center.                                     |
+| `ringBell`                | `true`  | Ring the village bell after respawning in a village.                                                |
+| `bellEcho`                | `true`  | Let the bell ring echo (fading repetitions).                                                        |
 | `showMessage`             | `true`  | Send a chat message after respawning in a village.                                                  |
 | `message`                 | …       | Text of that message.                                                                               |
 
