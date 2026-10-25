@@ -12,6 +12,9 @@
   "entrypoints": {
     "main": [
       "dev.welles.villagerespawn.VillageRespawnFabric"
+    ],
+    "modmenu": [
+      "dev.welles.villagerespawn.VillageRespawnModMenu"
     ]
   },
   "mixins": [
