@@ -7,7 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -17,6 +19,15 @@ import java.util.Properties;
  * The file is re-read automatically whenever it changes on disk.
  */
 public final class RespawnConfig {
+    /** The allowed values of each number setting; values outside are clamped. */
+    public static final Map<String, Range> RANGES = Map.of(
+        "searchRadiusChunks", new Range(1, 1000)
+    );
+    /** The allowed values of each setting with a fixed set of them. */
+    public static final Map<String, List<String>> CHOICES = Map.of(
+        "experienceOnDeath", Arrays.stream(ExperienceMode.values()).map(Enum::name).toList()
+    );
+
     public enum ExperienceMode {
         /** Vanilla behaviour: a part of the experience is dropped as orbs. */
         VANILLA,
@@ -160,7 +171,7 @@ public final class RespawnConfig {
         villageRespawn = bool(props, "villageRespawn", villageRespawn);
         overrideSpawnPoint = bool(props, "overrideSpawnPoint", overrideSpawnPoint);
         villageFirstSpawn = bool(props, "villageFirstSpawn", villageFirstSpawn);
-        searchRadiusChunks = integer(props, "searchRadiusChunks", searchRadiusChunks, 1, 1000);
+        searchRadiusChunks = integer(props, "searchRadiusChunks", searchRadiusChunks);
         fromNether = bool(props, "fromNether", fromNether);
         fromEnd = bool(props, "fromEnd", fromEnd);
         fromOtherDimensions = bool(props, "fromOtherDimensions", fromOtherDimensions);
@@ -178,6 +189,11 @@ public final class RespawnConfig {
             String value = entry.getValue().replace("\\", "\\\\").replace("\n", "\\n");
             writer.write(entry.getKey() + "=" + value + "\n");
         }
+    }
+
+    /** The default value of every setting, as written to the file. */
+    public static Map<String, String> defaults() {
+        return new RespawnConfig().toProperties();
     }
 
     private Map<String, String> toProperties() {
@@ -205,11 +221,11 @@ public final class RespawnConfig {
         return value == null ? fallback : Boolean.parseBoolean(value.trim());
     }
 
-    private static int integer(Properties props, String key, int fallback, int min, int max) {
+    private static int integer(Properties props, String key, int fallback) {
         String value = props.getProperty(key);
         if (value == null) return fallback;
         try {
-            return Math.clamp(Integer.parseInt(value.trim()), min, max);
+            return (int) RANGES.get(key).clamp(Integer.parseInt(value.trim()));
         } catch (NumberFormatException e) {
             VillageRespawn.LOGGER.warn("Invalid number for {}: {}", key, value);
             return fallback;
@@ -224,6 +240,16 @@ public final class RespawnConfig {
         } catch (IllegalArgumentException e) {
             VillageRespawn.LOGGER.warn("Invalid value for {}: {} (expected LOSE, KEEP or VANILLA)", key, value);
             return fallback;
+        }
+    }
+
+    public record Range(double min, double max) {
+        public double clamp(double value) {
+            return Math.clamp(value, min, max);
+        }
+
+        public boolean contains(double value) {
+            return value >= min && value <= max;
         }
     }
 }

@@ -13,7 +13,10 @@ public class VillageRespawnModMenu implements ModMenuApi {
         return parent -> new ConfigScreen(
             parent,
             FabricLoader.getInstance().getConfigDir().resolve(VillageRespawn.MOD_ID + ".properties"),
-            Component.literal(FabricLoader.getInstance().getModContainer(VillageRespawn.MOD_ID).map(mod -> mod.getMetadata().getName()).orElse(VillageRespawn.MOD_ID))
+            Component.literal(FabricLoader.getInstance().getModContainer(VillageRespawn.MOD_ID).map(mod -> mod.getMetadata().getName()).orElse(VillageRespawn.MOD_ID)),
+            RespawnConfig.defaults(),
+            RespawnConfig.RANGES,
+            RespawnConfig.CHOICES
         );
     }
 }
