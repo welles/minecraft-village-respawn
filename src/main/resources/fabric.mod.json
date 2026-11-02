@@ -4,6 +4,7 @@
   "version": "${version}",
   "name": "${name}",
   "description": "Players keep their items on death but lose all experience, and respawn in the village closest to where they died.",
+  "icon": "assets/${id}/icon.png",
   "authors": [
     "Nico Welles"
   ],

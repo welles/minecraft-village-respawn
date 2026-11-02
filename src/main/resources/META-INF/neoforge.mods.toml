@@ -10,6 +10,9 @@ version = "${version}"
 authors = "Nico Welles"
 displayTest = "IGNORE_SERVER_VERSION" # server-side only, clients do not need the mod
 description = "Players keep their items on death but lose all experience, and respawn in the village closest to where they died."
+${icon}File = "assets/${id}/icon.png"
+# pixel art, scaled without smoothing
+${icon}Blur = false
 
 [[mixins]]
 config = "villagerespawn.mixins.json"

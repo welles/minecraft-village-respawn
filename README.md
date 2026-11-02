@@ -1,3 +1,5 @@
+<img src="src/main/resources/assets/villagerespawn/icon.png" alt="" width="128" align="right">
+
 # Village Respawn
 
 A Minecraft mod for **Fabric** and **NeoForge** (Minecraft 1.21.1 – 26.3) that changes what happens when a player dies:
