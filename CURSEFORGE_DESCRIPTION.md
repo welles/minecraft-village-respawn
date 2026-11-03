@@ -1,5 +1,5 @@
 ---
-summary: Keep your items, lose your XP, and wake up in the nearest village after every death.
+summary: Keep your items, lose your XP, and wake up in the nearest village after every death. New players start in a village too, and every rule can be switched back to vanilla. Server-side only.
 ---
 
 > ⚠️ **This project is AI-generated.** The code, this description and the icon of this mod were created with generative AI (Claude by Anthropic), directed by the author. Please keep that in mind, and report any problems on GitHub.
